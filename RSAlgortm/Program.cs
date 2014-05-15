@@ -11,15 +11,15 @@ namespace RSAlgortm
         {
             IsItPrime(17);
 
-            FindCypherExponentE(31);
+            FindCypherExponentE(80);
         }
 
         public static int FindCypherExponentE(int phi)
         {
             int e = 0;
-            for (int i = 1; i < phi; i++)
+            for (int i = 2; i < phi; i++)
             {
-                if(Coprime(i,phi))
+                if(GCD(i,phi)==1)
                 {
                     e=i;
                 break;
@@ -33,26 +33,9 @@ namespace RSAlgortm
             return ((p - 1) * (q - 1));
         }
 
-        public static bool Coprime(int value1, int value2)
+        public static int GCD(int a, int b)
         {
-
-            if (value1 > value2)
-            {
-                if ((value1 %= value2)==1)
-                {
-                    return true;
-                }
-                return false;
-                
-            }
-            else
-            {
-                if((value2 %= value1)==1)
-                {
-                    return true;
-                }
-                return false;
-            }
+            return b == 0 ? a : GCD(b, a % b);
         }
 
         public static bool IsItPrime(int value)
