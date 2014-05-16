@@ -15,14 +15,14 @@ namespace RSAlgortm
             Console.ForegroundColor = ConsoleColor.Green;
             do
             {
-                primeP = rnd.Next(2, 20);
+                primeP = rnd.Next(2, 12);
 
             } while (!IsItPrime(primeP));
             do
             {
-                primeQ = rnd.Next(2, 20);
+                primeQ = rnd.Next(2, 12);
 
-            } while (!IsItPrime(primeQ));
+            } while (!IsItPrime(primeQ)||primeP==primeQ);
 
             n = primeP * primeQ;
             phi = EnumeratePhi(primeP, primeQ);
@@ -31,7 +31,7 @@ namespace RSAlgortm
 
             do
             {
-                if (((eulerTo * de) % phi) == (1))
+                if (((eulerTo * de) % phi) == (1) && de < phi)
                 {break;}
                 de++;
             } while (de<40000000);
@@ -48,9 +48,9 @@ namespace RSAlgortm
 
             double cryptM,decryptM;
 
-            cryptM=Math.Pow(message,eulerTo)%n;
+            cryptM= (Math.Pow(message,eulerTo))%n;
             Console.WriteLine("Crypted message {0}",cryptM);
-            decryptM = Math.Pow(message, de) % n;
+            decryptM = (Math.Pow(cryptM, de)) % n;
             Console.WriteLine("DeCrypted message {0}", decryptM);
 
             Console.WriteLine("\nFor end of program press any key");
