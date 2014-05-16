@@ -9,9 +9,33 @@ namespace RSAlgortm
     {
         static void Main(string[] args)
         {
-            IsItPrime(17);
+            int primeP,primeQ, n, eulerTo, phi, de=0;
+            Random rnd = new Random();
 
-            FindCypherExponentE(80);
+            Console.ForegroundColor = ConsoleColor.Green;
+            do
+            {
+                primeP = rnd.Next(2, 20);
+
+            } while (!IsItPrime(primeP));
+            do
+            {
+                primeQ = rnd.Next(2, 20);
+
+            } while (!IsItPrime(primeQ));
+
+            n = primeP * primeQ;
+            phi = EnumeratePhi(primeP, primeQ);
+            eulerTo = FindCypherExponentE(phi);
+
+            do
+            {
+                de++;
+            } while ((eulerTo*de)!=(1%phi));
+
+            Console.WriteLine("NUMBER MUST BE BETWEEN 1 AND 16 !!!!!");
+            bool errCount = false;
+            Console.ReadKey();
         }
 
         public static int FindCypherExponentE(int phi)
@@ -50,5 +74,7 @@ namespace RSAlgortm
             }
             return true;
         }
+
+
     }
 }
