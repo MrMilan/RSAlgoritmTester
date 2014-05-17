@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Numerics;
 
 namespace RSAlgortm
 {
@@ -9,8 +10,8 @@ namespace RSAlgortm
     {
         static void Main(string[] args)
         {
-            double message, eulerTo = 0, phi;
-            int primeP, primeQ, n, de;
+            BigInteger de;
+            int primeP, primeQ, n, eulerTo = 0, phi, message;
             Random rnd = new Random();
             bool japepa = true;
 
@@ -22,11 +23,11 @@ namespace RSAlgortm
                 {
                     if (japepa)
                     {
-                        primeP = rnd.Next(2, 5);
+                        primeP = rnd.Next(2, 17);
                     }
                     else
                     {
-                        primeP = rnd.Next(2, 12);
+                        primeP = rnd.Next(2, 20);
                     }
 
                 } while (!IsItPrime(primeP));
@@ -34,11 +35,11 @@ namespace RSAlgortm
                 {
                     if (japepa)
                     {
-                        primeQ = rnd.Next(2, 7);
+                        primeQ = rnd.Next(2, 15);
                     }
                     else
                     {
-                        primeQ = rnd.Next(2, 12);
+                        primeQ = rnd.Next(2, 20);
                     }
 
                 } while (!IsItPrime(primeQ) || primeP == primeQ);
@@ -53,25 +54,25 @@ namespace RSAlgortm
                     if (((eulerTo * de) % phi) == (1) && de < phi)
                     { break; }
                     de++;
-                } while (de < 30);
+                } while (de < 4294967296);
 
-            } while (de > 25);//|| de == eulerTo);
+            } while (de > 300|| de == eulerTo);
 
             Console.WriteLine("Values - primeP {0}, primeQ {1}, n {2}, e {3}, phi {4}, d {5}", primeP, primeQ, n, eulerTo, phi, de);
             bool errCount = false;
             do
             {
-                if (errCount) { Console.WriteLine("NUMBER MUST BE BETWEEN 1 AND 16 !!!!!"); }
-                Console.WriteLine("Enter your message (number 1-16) ");
+                if (errCount) { Console.WriteLine("NUMBER MUST BE BETWEEN 1 AND 50 !!!!!"); }
+                Console.WriteLine("Enter your message (number 1-50) ");
                 message = ValidateReadNumber(Console.ReadLine());
                 errCount = true;
-            } while (message < 0 || message > 17);
+            } while (message < 0 || message > 51);
 
-            double cryptM, decryptM;
+            BigInteger cryptM, decryptM;
 
-            cryptM = (Math.Pow(message, eulerTo)) % n;
+            cryptM = BigInteger.ModPow(message, eulerTo,n);
             Console.WriteLine("Crypted message {0}", cryptM);
-            decryptM = (Math.Pow(cryptM, de)) % n;
+            decryptM = BigInteger.ModPow(cryptM, de, n);
             Console.WriteLine("DeCrypted message {0}", decryptM);
 
             Console.WriteLine("\nFor end of program press any key");
@@ -79,7 +80,7 @@ namespace RSAlgortm
             Console.ReadKey();
         }
 
-        public static double FindCypherExponentE(double phi)
+        public static int FindCypherExponentE(int phi)
         {
             int e = 0;
             for (int i = 2; i < phi; i++)
@@ -93,17 +94,17 @@ namespace RSAlgortm
             return e;
         }
 
-        public static double EnumeratePhi(double p, double q)
+        public static int EnumeratePhi(int p, int q)
         {
             return ((p - 1) * (q - 1));
         }
 
-        public static double GCD(double a, double b)
+        public static int GCD(int a, int b)
         {
             return b == 0 ? a : GCD(b, a % b);
         }
 
-        public static bool IsItPrime(double value)
+        public static bool IsItPrime(int value)
         {
             for (int i = 2; i < value; i++)
             {
