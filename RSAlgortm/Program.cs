@@ -9,52 +9,73 @@ namespace RSAlgortm
     {
         static void Main(string[] args)
         {
-            double primeP,primeQ, n, eulerTo, phi, de=0,message;
+            double message, eulerTo = 0, phi;
+            int primeP, primeQ, n, de;
             Random rnd = new Random();
+            bool japepa = true;
 
             Console.ForegroundColor = ConsoleColor.Green;
             do
             {
-                primeP = rnd.Next(2, 12);
+                de = 0;
+                do
+                {
+                    if (japepa)
+                    {
+                        primeP = rnd.Next(2, 5);
+                    }
+                    else
+                    {
+                        primeP = rnd.Next(2, 12);
+                    }
 
-            } while (!IsItPrime(primeP));
-            do
-            {
-                primeQ = rnd.Next(2, 12);
+                } while (!IsItPrime(primeP));
+                do
+                {
+                    if (japepa)
+                    {
+                        primeQ = rnd.Next(2, 7);
+                    }
+                    else
+                    {
+                        primeQ = rnd.Next(2, 12);
+                    }
 
-            } while (!IsItPrime(primeQ)||primeP==primeQ);
+                } while (!IsItPrime(primeQ) || primeP == primeQ);
 
-            n = primeP * primeQ;
-            phi = EnumeratePhi(primeP, primeQ);
-            eulerTo = FindCypherExponentE(phi);
+                n = primeP * primeQ;
+                phi = EnumeratePhi(primeP, primeQ);
+                eulerTo = FindCypherExponentE(phi);
+                if (japepa) { japepa = false; } else { japepa = true; }
 
+                do
+                {
+                    if (((eulerTo * de) % phi) == (1) && de < phi)
+                    { break; }
+                    de++;
+                } while (de < 30);
 
-            do
-            {
-                if (((eulerTo * de) % phi) == (1) && de < phi)
-                {break;}
-                de++;
-            } while (de<40000000);
+            } while (de > 25);//|| de == eulerTo);
 
-            Console.WriteLine("Values- primeP {0}, primeQ {1}, n {2}, e {3}, phi {4}, d {5}", primeP, primeQ, n, eulerTo, phi, de);
+            Console.WriteLine("Values - primeP {0}, primeQ {1}, n {2}, e {3}, phi {4}, d {5}", primeP, primeQ, n, eulerTo, phi, de);
             bool errCount = false;
             do
             {
-                if (errCount) { Console.WriteLine("NUMBER MUST BE BETWEEN 1 AND 50 !!!!!"); }
-                Console.WriteLine("Enter your message (number 1-50) ");
+                if (errCount) { Console.WriteLine("NUMBER MUST BE BETWEEN 1 AND 16 !!!!!"); }
+                Console.WriteLine("Enter your message (number 1-16) ");
                 message = ValidateReadNumber(Console.ReadLine());
                 errCount = true;
-            } while (message < 0 || message > 51);
+            } while (message < 0 || message > 17);
 
-            double cryptM,decryptM;
+            double cryptM, decryptM;
 
-            cryptM= (Math.Pow(message,eulerTo))%n;
-            Console.WriteLine("Crypted message {0}",cryptM);
+            cryptM = (Math.Pow(message, eulerTo)) % n;
+            Console.WriteLine("Crypted message {0}", cryptM);
             decryptM = (Math.Pow(cryptM, de)) % n;
             Console.WriteLine("DeCrypted message {0}", decryptM);
 
             Console.WriteLine("\nFor end of program press any key");
-            
+
             Console.ReadKey();
         }
 
@@ -63,10 +84,10 @@ namespace RSAlgortm
             int e = 0;
             for (int i = 2; i < phi; i++)
             {
-                if(GCD(i,phi)==1)
+                if (GCD(i, phi) == 1)
                 {
-                    e=i;
-                break;
+                    e = i;
+                    break;
                 }
             }
             return e;
@@ -90,7 +111,7 @@ namespace RSAlgortm
                 {
                     return false;
                 }
-                
+
             }
             return true;
         }
